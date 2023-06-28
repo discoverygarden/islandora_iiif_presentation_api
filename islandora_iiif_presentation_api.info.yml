@@ -1,0 +1,7 @@
+name: Islandora IIIF Presentation API
+type: module
+description: 'Provides a IIIF Presentation API implementation for Islandora entities within Drupal.'
+package: DGI
+core_version_requirement: ^9 || ^10
+dependencies:
+  - iiif_presentation_api:iiif_presentation_api
