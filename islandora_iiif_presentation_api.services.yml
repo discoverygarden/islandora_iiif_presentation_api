@@ -1,0 +1,21 @@
+services:
+  serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.entity_reference_field_item_list:
+    class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\EntityReferenceFieldItemListNormalizer'
+    tags:
+      - { name: normalizer, priority: 20 }
+    arguments: ['@entity_type.manager']
+  serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.entity_reference_item:
+    class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\EntityReferenceItemNormalizer'
+    tags:
+      - { name: normalizer, priority: 20 }
+    arguments: ['@islandora.utils']
+  serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.media_entity:
+    class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\MediaEntityNormalizer'
+    tags:
+      - { name: normalizer, priority: 20 }
+    arguments: ['@current_user']
+  serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.image_item:
+    class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ImageItemNormalizer'
+    tags:
+      - { name: normalizer, priority: 25 }
+    arguments: ['@entity_type.manager']
