@@ -3,14 +3,21 @@
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
+use Drupal\islandora\IslandoraUtils;
+use Drupal\islandora_iiif_presentation_api\Normalizer\FieldSpecificNormalizerTrait;
 use Symfony\Component\Serializer\Exception\LogicException;
 
 /**
  * Normalizer for image items.
  */
 class ImageItemNormalizer extends NormalizerBase {
+
+  use EntityUriTrait;
+  use FieldSpecificNormalizerTrait;
 
   /**
    * {@inheritDoc}
@@ -29,9 +36,14 @@ class ImageItemNormalizer extends NormalizerBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Routing\RouteProviderInterface $route_provider
+   *   The route provider service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, RouteProviderInterface $route_provider) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->setRouteProvider($route_provider);
+    $this->supportedReferenceField = 'field_media_image';
+    $this->supportedEntityType = 'media';
   }
 
   /**

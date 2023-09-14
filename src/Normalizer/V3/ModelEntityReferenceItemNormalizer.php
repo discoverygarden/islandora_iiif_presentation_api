@@ -5,12 +5,16 @@ namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\islandora\IslandoraUtils;
+use Drupal\islandora_iiif_presentation_api\Normalizer\FieldSpecificNormalizerTrait;
 use Drupal\taxonomy\TermInterface;
+use Symfony\Component\Serializer\Exception\LogicException;
 
 /**
- * Normalizer for entity reference items.
+ * Normalizer for oddity that is Islandora's field_model to find media.
  */
-class EntityReferenceItemNormalizer extends NormalizerBase {
+class ModelEntityReferenceItemNormalizer extends NormalizerBase {
+
+  use FieldSpecificNormalizerTrait;
 
   /**
    * {@inheritDoc}
@@ -32,13 +36,15 @@ class EntityReferenceItemNormalizer extends NormalizerBase {
   protected ?TermInterface $serviceFileTerm = NULL;
 
   /**
-   * Constructor for the EntityReferenceItemNormalizer.
+   * Constructor for the ModelEntityReferenceItemNormalizer.
    *
    * @param \Drupal\islandora\IslandoraUtils $islandora_utils
    *   The IslandoraUtils service.
    */
   public function __construct(IslandoraUtils $islandora_utils) {
     $this->islandoraUtils = $islandora_utils;
+    $this->supportedReferenceField = IslandoraUtils::MODEL_FIELD;
+    $this->supportedEntityType = 'node';
   }
 
   /**
@@ -48,9 +54,8 @@ class EntityReferenceItemNormalizer extends NormalizerBase {
     // XXX: In its current form this is only going to be applicable to things
     // that have image media as their service files.
     if ($media = $this->getDerivativeMedia($object)) {
-      $normalized['items'] = [];
-      $normalized['items'][] = $this->serializer->normalize($media, $format, $context);
-      return $normalized;
+      $normalized = $this->serializer->normalize($media, $format, $context);
+      return $context['base-depth'] ? ['items' => [$normalized]] : $normalized;
     }
     return [];
   }
@@ -70,7 +75,7 @@ class EntityReferenceItemNormalizer extends NormalizerBase {
     // approach but until the relationship direction is changed here we are.
     $service_file_term = $this->getServiceFileTerm();
     if (!$service_file_term) {
-      return FALSE;
+      throw new LogicException('Service file taxonomy term not found.');
     }
     return $this->islandoraUtils->getMediaWithTerm($object->getEntity(), $service_file_term);
   }
@@ -86,6 +91,20 @@ class EntityReferenceItemNormalizer extends NormalizerBase {
       $this->serviceFileTerm = $this->islandoraUtils->getTermForUri('http://pcdm.org/use#ServiceFile');
     }
     return $this->serviceFileTerm;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function supportsNormalization($data, $format = NULL) {
+    return parent::supportsNormalization($data, $format) && $this->isSupportedTypeAndReference($data);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function hasCacheableSupportsMethod(): bool {
+    return FALSE;
   }
 
   /**
