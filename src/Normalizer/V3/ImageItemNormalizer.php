@@ -36,12 +36,9 @@ class ImageItemNormalizer extends NormalizerBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\Core\Routing\RouteProviderInterface $route_provider
-   *   The route provider service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, RouteProviderInterface $route_provider) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->setRouteProvider($route_provider);
     $this->supportedReferenceField = 'field_media_image';
     $this->supportedEntityType = 'media';
   }

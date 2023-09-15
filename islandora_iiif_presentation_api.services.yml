@@ -23,9 +23,9 @@ services:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ImageMediaEntityNormalizer'
     tags:
       - { name: normalizer, priority: 20 }
-    arguments: ['@current_user', '@router.route_provider']
+    arguments: ['@current_user']
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.image_item:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ImageItemNormalizer'
     tags:
       - { name: normalizer, priority: 25 }
-    arguments: ['@entity_type.manager', '@router.route_provider']
+    arguments: ['@entity_type.manager']
