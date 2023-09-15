@@ -9,6 +9,7 @@ Provides serialization to IIIF Presentation API v3.
 This module requires the following modules/libraries:
 
 * [IIIF Presentation API][1]
+* [Islandora][2]
 
 ## Installation
 
@@ -43,3 +44,4 @@ and or contact
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 [1]: https://github.com/discoverygarden/iiif_presentation_api
+[2]: https://github.com/islandora/islandora
