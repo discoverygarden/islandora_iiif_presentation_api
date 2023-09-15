@@ -3,12 +3,10 @@
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
-use Drupal\islandora\IslandoraUtils;
-use Drupal\islandora_iiif_presentation_api\Normalizer\FieldSpecificNormalizerTrait;
+use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemSpecificNormalizerTrait;
 use Symfony\Component\Serializer\Exception\LogicException;
 
 /**
@@ -17,7 +15,7 @@ use Symfony\Component\Serializer\Exception\LogicException;
 class ImageItemNormalizer extends NormalizerBase {
 
   use EntityUriTrait;
-  use FieldSpecificNormalizerTrait;
+  use FieldItemSpecificNormalizerTrait;
 
   /**
    * {@inheritDoc}

@@ -6,14 +6,14 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
-use Drupal\islandora_iiif_presentation_api\Normalizer\FieldSpecificNormalizerTrait;
+use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemListSpecificNormalizerTrait;
 
 /**
  * Expands entity reference fields to their referenced entity given constraints.
  */
 class FieldSpecificEntityReferenceFieldItemListNormalizer extends NormalizerBase {
 
-  use FieldSpecificNormalizerTrait;
+  use FieldItemListSpecificNormalizerTrait;
 
   /**
    * The entity type manager.

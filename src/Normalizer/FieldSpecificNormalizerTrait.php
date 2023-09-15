@@ -32,12 +32,28 @@ trait FieldSpecificNormalizerTrait {
    *   Whether it's one of the supported fields or not.
    */
   public function isSupportedTypeAndReference($data): bool {
-    // XXX: Being explicit as this trait should only deal with List and Items.
-    if (!$data instanceof FieldItemInterface && !$data instanceof FieldItemListInterface) {
-      return FALSE;
-    }
-    $field_name = $data instanceof FieldItemInterface ? $data->getParent()->getName() : $data->getName();
-    return $data->getEntity()->getEntityTypeId() === $this->supportedEntityType && $field_name === $this->supportedReferenceField;
+    return is_a($data, $this->getSupportedType()) &&
+      $data->getEntity()->getEntityTypeId() === $this->supportedEntityType &&
+      $this->getFieldName($data) === $this->supportedReferenceField;
   }
+
+  /**
+   * Gets the supported type being used.
+   *
+   * @return string
+   *   The class name of the supported type.
+   */
+  abstract protected function getSupportedType() : string;
+
+  /**
+   * Gets the field name of the reference that this normalizer supports.
+   *
+   * @param mixed $data
+   *   Object to normalize.
+   *
+   * @return string
+   *   The field name that is being supported.
+   */
+  abstract protected function getFieldName($data) : string;
 
 }
