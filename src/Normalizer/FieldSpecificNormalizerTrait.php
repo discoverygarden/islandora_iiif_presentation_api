@@ -2,9 +2,6 @@
 
 namespace Drupal\islandora_iiif_presentation_api\Normalizer;
 
-use Drupal\Core\Field\FieldItemInterface;
-use Drupal\Core\Field\FieldItemListInterface;
-
 /**
  * Provides a trait for generating entity URIs.
  */
@@ -19,6 +16,8 @@ trait FieldSpecificNormalizerTrait {
 
   /**
    * The entity type that this normalizer supports.
+   *
+   * @var string
    */
   protected string $supportedEntityType;
 

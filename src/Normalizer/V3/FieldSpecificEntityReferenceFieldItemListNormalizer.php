@@ -32,8 +32,12 @@ class FieldSpecificEntityReferenceFieldItemListNormalizer extends NormalizerBase
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param string $entity_type
+   *   The entity type that this normalizer supports.
+   * @param string $reference_field
+   *   The field name of the reference that this normalizer supports.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, $entity_type, $reference_field) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, string $entity_type, string $reference_field) {
     $this->entityTypeManager = $entity_type_manager;
     $this->supportedReferenceField = $reference_field;
     $this->supportedEntityType = $entity_type;
