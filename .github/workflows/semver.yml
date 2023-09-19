@@ -4,7 +4,7 @@ on:
   pull_request_target:
     types: closed
     branches:
-      - ${main_branch}
+      - main
 
 jobs:
   tag_update:
