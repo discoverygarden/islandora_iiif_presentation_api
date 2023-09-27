@@ -4,4 +4,8 @@ description: 'Provides a IIIF Presentation API implementation for Islandora enti
 package: DGI
 core_version_requirement: ^9 || ^10
 dependencies:
+  - drupal:image
+  - drupal:media
+  - drupal:taxonomy
   - iiif_presentation_api:iiif_presentation_api
+  - islandora:islandora
