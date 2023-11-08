@@ -2,7 +2,7 @@ name: Islandora IIIF Presentation API
 type: module
 description: 'Provides a IIIF Presentation API implementation for Islandora entities within Drupal.'
 package: DGI
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9
 dependencies:
   - drupal:image
   - drupal:media
