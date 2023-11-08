@@ -46,10 +46,10 @@ class FieldSpecificEntityReferenceFieldItemListNormalizer extends NormalizerBase
   /**
    * {@inheritDoc}
    */
-  public function supportsNormalization($data, $format = NULL) {
+  public function supportsNormalization($data, ?string $format = NULL, array $context = []) : bool {
     // Parent will check both the format and the class defined in the normalizer
     // for us.
-    return parent::supportsNormalization($data, $format) && $this->isSupportedTypeAndReference($data);
+    return parent::supportsNormalization($data, $format, $context) && $this->isSupportedTypeAndReference($data);
   }
 
   /**
