@@ -3,7 +3,7 @@
     "description": "Provides metadata and canvas information for IIIF Presentation API manifests in Drupal.",
     "type": "drupal-module",
     "require": {
-        "discoverygarden/iiif_presentation_api": "^1",
+        "discoverygarden/iiif_presentation_api": "^2",
         "islandora/islandora": "^2"
     },
     "license": "GPL-3.0-only"

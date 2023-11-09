@@ -96,8 +96,8 @@ class ModelEntityReferenceItemNormalizer extends NormalizerBase {
   /**
    * {@inheritDoc}
    */
-  public function supportsNormalization($data, $format = NULL) {
-    return parent::supportsNormalization($data, $format) && $this->isSupportedTypeAndReference($data);
+  public function supportsNormalization($data, ?string $format = NULL, array $context = []) : bool {
+    return parent::supportsNormalization($data, $format, $context) && $this->isSupportedTypeAndReference($data);
   }
 
   /**
