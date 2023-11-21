@@ -2,7 +2,6 @@
 
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\file\FileInterface;
 use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
@@ -90,7 +89,13 @@ class ImageItemNormalizer extends NormalizerBase {
   protected function generateBody(FileInterface $file) : array {
     /** @var \Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent $event */
     $event = $this->eventDispatcher->dispatch(new ImageBodyEvent($file));
-    return NestedArray::mergeDeepArray($event->getBodies());
+    $bodies = $event->getBodies();
+    if (!$bodies) {
+      return [];
+    }
+    $body = reset($bodies);
+    $body['service'] = array_column($bodies, 'service');
+    return $body;
   }
 
   /**
