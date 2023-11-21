@@ -2,11 +2,15 @@
 
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\file\FileInterface;
 use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
+use Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemSpecificNormalizerTrait;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
 
 /**
@@ -23,20 +27,12 @@ class ImageItemNormalizer extends NormalizerBase {
   protected $supportedInterfaceOrClass = ImageItem::class;
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * Constructor.
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * Constructor for the ImageItemNormalizer.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected EventDispatcherInterface $eventDispatcher,
+  ) {
     $this->supportedReferenceField = 'field_media_image';
     $this->supportedEntityType = 'media';
   }
@@ -58,6 +54,7 @@ class ImageItemNormalizer extends NormalizerBase {
       $normalized['width'] = (int) $values['width'];
     }
 
+    /** @var \Drupal\file\FileInterface $file */
     $file = $this->entityTypeManager->getStorage('file')->load($values['target_id']);
     if ($file) {
       $this->addCacheableDependency($context, $file);
@@ -68,11 +65,8 @@ class ImageItemNormalizer extends NormalizerBase {
           [
             'id' => $this->getEntityUri($file, $context),
             'type' => 'Annotation',
-            'body' => [
-              'id' => $file->createFileUrl(FALSE),
-              'type' => 'Image',
-              'format' => $file->getMimeType(),
-            ],
+            'motivation' => 'painting',
+            'body' => $this->generateBody($file),
             'height' => (int) $normalized['height'],
             'width' => (int) $normalized['width'],
             'target' => $context['parent']['id'],
@@ -80,7 +74,23 @@ class ImageItemNormalizer extends NormalizerBase {
         ],
       ];
     }
+
     return $normalized;
+  }
+
+  /**
+   * Generate the annotation body.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The file for which to generate the body.
+   *
+   * @return array
+   *   An associative array representing the body.
+   */
+  protected function generateBody(FileInterface $file) : array {
+    /** @var \Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent $event */
+    $event = $this->eventDispatcher->dispatch(new ImageBodyEvent($file));
+    return NestedArray::mergeDeepArray($event->getBodies());
   }
 
   /**
