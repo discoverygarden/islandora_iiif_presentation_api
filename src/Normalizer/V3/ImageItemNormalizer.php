@@ -94,7 +94,7 @@ class ImageItemNormalizer extends NormalizerBase {
       return [];
     }
     $body = reset($bodies);
-    $body['service'] = array_column($bodies, 'service');
+    $body['service'] = array_filter(array_column($bodies, 'service'));
     return $body;
   }
 
