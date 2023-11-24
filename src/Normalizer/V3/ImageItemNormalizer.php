@@ -3,6 +3,8 @@
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
+use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent;
 use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
@@ -57,18 +59,35 @@ class ImageItemNormalizer extends NormalizerBase {
     $file = $this->entityTypeManager->getStorage('file')->load($values['target_id']);
     if ($file) {
       $this->addCacheableDependency($context, $file);
+      //$item_id = $this->getEntityUri($file, $context);
+      try {
+        $item_url = $file->toUrl('canonical');
+      }
+      catch (UndefinedLinkTemplateException $e) {
+        $item_url = Url::fromRoute(
+          "rest.entity.{$file->getEntityTypeId()}.GET",
+          [
+            $file->getEntityTypeId() => $file->id(),
+          ]
+        );
+      }
+      $generated_item_url = $item_url->setAbsolute()
+        ->toString(TRUE);
+      $this->addCacheableDependency($context, $generated_item_url);
+      $item_id = $generated_item_url->getGeneratedUrl();
+      $page_id = "{$item_id}/page/0";
       $normalized['items'][] = [
-        'id' => $context['parent']['id'],
+        'id' => $page_id,
         'type' => 'AnnotationPage',
         'items' => [
           [
-            'id' => $this->getEntityUri($file, $context),
+            'id' => "{$item_id}/page/0/annotation/0",
             'type' => 'Annotation',
             'motivation' => 'painting',
             'body' => $this->generateBody($file),
             'height' => (int) $normalized['height'],
             'width' => (int) $normalized['width'],
-            'target' => $context['parent']['id'],
+            'target' => $page_id,
           ],
         ],
       ];

@@ -21,9 +21,9 @@ services:
     arguments: ['@islandora.utils']
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.media_entity:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ImageMediaEntityNormalizer'
+    parent: serializer.normalizer.iiif_presentation_api.iiif_p_v3.content_entity
     tags:
       - { name: normalizer, priority: 20 }
-    arguments: ['@current_user']
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.image_item:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ImageItemNormalizer'
     tags:
