@@ -4,9 +4,9 @@ namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\file\FileInterface;
+use Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent;
 use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
-use Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemSpecificNormalizerTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;

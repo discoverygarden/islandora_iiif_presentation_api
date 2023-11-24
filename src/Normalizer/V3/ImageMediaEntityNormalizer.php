@@ -5,7 +5,6 @@ namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
 use Drupal\iiif_presentation_api\Normalizer\V3\ContentEntityNormalizer;
 use Drupal\media\MediaInterface;
-use Symfony\Component\Serializer\Exception\LogicException;
 
 /**
  * Normalizer for image media entities.
