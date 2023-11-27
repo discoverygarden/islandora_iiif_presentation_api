@@ -59,7 +59,7 @@ class ImageItemNormalizer extends NormalizerBase {
     $file = $this->entityTypeManager->getStorage('file')->load($values['target_id']);
     if ($file) {
       $this->addCacheableDependency($context, $file);
-      //$item_id = $this->getEntityUri($file, $context);
+
       try {
         $item_url = $file->toUrl('canonical');
       }
