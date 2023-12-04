@@ -25,6 +25,7 @@ class ImageMediaEntityNormalizer extends ContentEntityNormalizer {
     if (!isset($context['parent'])) {
       throw new \LogicException('Media must be normalized with a parent context.');
     }
+
     // XXX: If the parent is already a canvas just pass along the media's fields
     // to be normalized as opposed to creating a new level / item.
     return $context['parent']['type'] === 'Manifest' ?
