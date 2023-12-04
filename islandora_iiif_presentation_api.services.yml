@@ -28,4 +28,6 @@ services:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ImageItemNormalizer'
     tags:
       - { name: normalizer, priority: 25 }
-    arguments: ['@entity_type.manager']
+    arguments:
+      - '@entity_type.manager'
+      - '@event_dispatcher'
