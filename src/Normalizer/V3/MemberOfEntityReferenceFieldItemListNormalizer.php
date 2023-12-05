@@ -20,6 +20,7 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
     $query = $this->entityTypeManager->getStorage('node')->getQuery();
     $ids = $query->condition(IslandoraUtils::MEMBER_OF_FIELD, $object->getEntity()->id())
       ->accessCheck()
+      ->sort('field_weight')
       ->execute();
 
     // Load all the entities.
