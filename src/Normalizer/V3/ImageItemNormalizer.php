@@ -91,6 +91,9 @@ class ImageItemNormalizer extends NormalizerBase {
           ],
         ],
       ];
+      $normalized['thumbnail'] = [
+        $this->generateBody($file, '!256,256'),
+      ];
     }
 
     return $normalized;
@@ -101,13 +104,15 @@ class ImageItemNormalizer extends NormalizerBase {
    *
    * @param \Drupal\file\FileInterface $file
    *   The file for which to generate the body.
+   * @param string $dimension_spec
+   *   IIIF Image API dimension/size hint.
    *
    * @return array
    *   An associative array representing the body.
    */
-  protected function generateBody(FileInterface $file) : array {
+  protected function generateBody(FileInterface $file, string $dimension_spec = 'full') : array {
     /** @var \Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent $event */
-    $event = $this->eventDispatcher->dispatch(new ImageBodyEvent($file));
+    $event = $this->eventDispatcher->dispatch(new ImageBodyEvent($file, $dimension_spec));
     $bodies = $event->getBodies();
     if (!$bodies) {
       return [];
