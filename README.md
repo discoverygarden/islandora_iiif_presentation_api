@@ -33,6 +33,10 @@ Current maintainers:
 
 * [discoverygarden](http://www.discoverygarden.ca)
 
+Sponsor:
+
+* [CTDA: Connecticut Digital Archive](https://lib.uconn.edu/find/connecticut-digital-archive/)
+
 ## Development
 
 If you would like to contribute to this module create an issue, pull request
