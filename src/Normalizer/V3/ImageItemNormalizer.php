@@ -106,6 +106,8 @@ class ImageItemNormalizer extends NormalizerBase {
    *   The file for which to generate the body.
    * @param string $dimension_spec
    *   IIIF Image API dimension/size hint.
+   * @param array $context
+   *   The serializer context.
    *
    * @return array
    *   An associative array representing the body.
