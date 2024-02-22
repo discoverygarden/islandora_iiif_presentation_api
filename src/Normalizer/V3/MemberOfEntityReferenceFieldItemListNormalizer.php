@@ -13,6 +13,10 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
    * {@inheritDoc}
    */
   public function normalize($object, $format = NULL, array $context = []) {
+    if (!$context['base-depth']) {
+      return [];
+    }
+
     $normalized = [];
     // XXX: Given that children are being resolved this is non-standard.
     // Leverage an entity query to find all children that are referencing the
@@ -27,9 +31,9 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
     $children = $this->entityTypeManager->getStorage('node')->loadMultiple($ids);
     if (!empty($children)) {
       $normalized['items'] = [];
-      $context['base-depth'] = FALSE;
+      $child_context = $context + ['base-depth' => FALSE];
       foreach ($children as $child) {
-        $normalized['items'][] = $this->serializer->normalize($child, $format, $context);
+        $normalized['items'][] = $this->serializer->normalize($child, $format, $child_context);
       }
     }
     return $normalized;
