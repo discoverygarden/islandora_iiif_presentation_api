@@ -11,13 +11,14 @@ use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemSpecificNormalizerTrait;
+use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
 
 /**
  * Normalizer for image items.
  */
-class ImageItemNormalizer extends NormalizerBase {
+class ImageItemNormalizer extends NormalizerBase implements MappedFieldInterface {
 
   use EntityUriTrait;
   use FieldItemSpecificNormalizerTrait;
@@ -34,8 +35,8 @@ class ImageItemNormalizer extends NormalizerBase {
     protected EntityTypeManagerInterface $entityTypeManager,
     protected EventDispatcherInterface $eventDispatcher,
   ) {
-    $this->supportedReferenceField = 'field_media_image';
-    $this->supportedEntityType = 'media';
+    $this->targetFieldName = 'field_media_image';
+    $this->targetEntityTypeId = 'media';
   }
 
   /**

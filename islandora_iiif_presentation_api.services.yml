@@ -3,21 +3,25 @@ services:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\FieldSpecificEntityReferenceFieldItemListNormalizer'
     tags:
       - { name: normalizer, priority: 20 }
+      - { name: iiif_presentation_api_map.v3 }
     arguments: ['@entity_type.manager', 'node', 'field_model']
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.media.field_media_image_entity_reference_field_item_list:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\FieldSpecificEntityReferenceFieldItemListNormalizer'
     tags:
       - { name: normalizer, priority: 20 }
+      - { name: iiif_presentation_api_map.v3 }
     arguments: [ '@entity_type.manager', 'media', 'field_media_image' ]
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.node.field_member_of_entity_reference_field_item_list:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\MemberOfEntityReferenceFieldItemListNormalizer'
     tags:
       - { name: normalizer, priority: 25 }
+      - { name: iiif_presentation_api_map.v3 }
     arguments: [ '@entity_type.manager', 'node', 'field_member_of' ]
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.node.field_model_entity_reference_item:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ModelEntityReferenceItemNormalizer'
     tags:
       - { name: normalizer, priority: 20 }
+      - { name: iiif_presentation_api_map.v3 }
     arguments: ['@islandora.utils']
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.media_entity:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ImageMediaEntityNormalizer'
