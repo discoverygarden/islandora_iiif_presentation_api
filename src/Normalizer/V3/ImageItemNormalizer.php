@@ -84,7 +84,7 @@ class ImageItemNormalizer extends NormalizerBase {
             'id' => "{$item_id}/page/0/annotation/0",
             'type' => 'Annotation',
             'motivation' => 'painting',
-            'body' => $this->generateBody($file),
+            'body' => $this->generateBody($file, context: $context),
             'height' => (int) $normalized['height'],
             'width' => (int) $normalized['width'],
             'target' => $page_id,
@@ -92,7 +92,7 @@ class ImageItemNormalizer extends NormalizerBase {
         ],
       ];
       $normalized['thumbnail'] = [
-        $this->generateBody($file, '!256,256'),
+        $this->generateBody($file, '!256,256', $context),
       ];
     }
 
@@ -106,13 +106,16 @@ class ImageItemNormalizer extends NormalizerBase {
    *   The file for which to generate the body.
    * @param string $dimension_spec
    *   IIIF Image API dimension/size hint.
+   * @param array $context
+   *   The serializer context.
    *
    * @return array
    *   An associative array representing the body.
    */
-  protected function generateBody(FileInterface $file, string $dimension_spec = 'full') : array {
+  protected function generateBody(FileInterface $file, string $dimension_spec = 'full', array $context = []) : array {
     /** @var \Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent $event */
     $event = $this->eventDispatcher->dispatch(new ImageBodyEvent($file, $dimension_spec));
+    $this->addCacheableDependency($context, $event);
     $bodies = $event->getBodies();
     if (!$bodies) {
       return [];
