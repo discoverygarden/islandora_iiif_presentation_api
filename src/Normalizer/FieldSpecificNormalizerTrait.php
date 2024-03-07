@@ -12,14 +12,14 @@ trait FieldSpecificNormalizerTrait {
    *
    * @var string
    */
-  protected string $supportedReferenceField;
+  protected string $targetFieldName;
 
   /**
    * The entity type that this normalizer supports.
    *
    * @var string
    */
-  protected string $supportedEntityType;
+  protected string $targetEntityTypeId;
 
   /**
    * Ensures that the only field and entity type defined supports normalization.
@@ -32,8 +32,28 @@ trait FieldSpecificNormalizerTrait {
    */
   public function isSupportedTypeAndReference($data): bool {
     return is_a($data, $this->getSupportedType()) &&
-      $data->getEntity()->getEntityTypeId() === $this->supportedEntityType &&
-      $this->getFieldName($data) === $this->supportedReferenceField;
+      $data->getEntity()->getEntityTypeId() === $this->getTargetEntityTypeId() &&
+      $this->getFieldName($data) === $this->getTargetFieldName();
+  }
+
+  /**
+   * Get the target entity type.
+   *
+   * @return string
+   *   The target entity type.
+   */
+  public function getTargetEntityTypeId() : string {
+    return $this->targetEntityTypeId;
+  }
+
+  /**
+   * Get the target field name.
+   *
+   * @return string
+   *   The target field name.
+   */
+  public function getTargetFieldName() : string {
+    return $this->targetFieldName;
   }
 
   /**

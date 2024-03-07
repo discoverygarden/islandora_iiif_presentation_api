@@ -7,11 +7,12 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemListSpecificNormalizerTrait;
+use Drupal\iiif_presentation_api\MappedFieldInterface;
 
 /**
  * Expands entity reference fields to their referenced entity given constraints.
  */
-class FieldSpecificEntityReferenceFieldItemListNormalizer extends NormalizerBase {
+class FieldSpecificEntityReferenceFieldItemListNormalizer extends NormalizerBase implements MappedFieldInterface {
 
   use FieldItemListSpecificNormalizerTrait;
 
@@ -39,8 +40,8 @@ class FieldSpecificEntityReferenceFieldItemListNormalizer extends NormalizerBase
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, string $entity_type, string $reference_field) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->supportedReferenceField = $reference_field;
-    $this->supportedEntityType = $entity_type;
+    $this->targetFieldName = $reference_field;
+    $this->targetEntityTypeId = $entity_type;
   }
 
   /**

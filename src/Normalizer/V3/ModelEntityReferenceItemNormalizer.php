@@ -6,13 +6,14 @@ use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\islandora\IslandoraUtils;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemSpecificNormalizerTrait;
+use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\taxonomy\TermInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
 
 /**
  * Normalizer for oddity that is Islandora's field_model to find media.
  */
-class ModelEntityReferenceItemNormalizer extends NormalizerBase {
+class ModelEntityReferenceItemNormalizer extends NormalizerBase implements MappedFieldInterface {
 
   use FieldItemSpecificNormalizerTrait;
 
@@ -43,8 +44,8 @@ class ModelEntityReferenceItemNormalizer extends NormalizerBase {
    */
   public function __construct(IslandoraUtils $islandora_utils) {
     $this->islandoraUtils = $islandora_utils;
-    $this->supportedReferenceField = IslandoraUtils::MODEL_FIELD;
-    $this->supportedEntityType = 'node';
+    $this->targetFieldName = IslandoraUtils::MODEL_FIELD;
+    $this->targetEntityTypeId = 'node';
   }
 
   /**
