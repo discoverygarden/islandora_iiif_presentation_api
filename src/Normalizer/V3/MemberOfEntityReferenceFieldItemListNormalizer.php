@@ -16,6 +16,9 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
     if (!$context['base-depth']) {
       return [];
     }
+    if ($context['cacheability']) {
+      $context['cacheability']->addCacheTags(['node_list']);
+    }
 
     $normalized = [];
     // XXX: Given that children are being resolved this is non-standard.
