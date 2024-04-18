@@ -2,8 +2,8 @@
 
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
-use Drupal\islandora\IslandoraUtils;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\islandora\IslandoraUtils;
 
 /**
  * Handles the oddity that is field_member_of for Islandora nodes.
