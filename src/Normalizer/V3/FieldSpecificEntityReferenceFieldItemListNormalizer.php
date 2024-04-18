@@ -5,9 +5,9 @@ namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
+use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemListSpecificNormalizerTrait;
-use Drupal\iiif_presentation_api\MappedFieldInterface;
 
 /**
  * Expands entity reference fields to their referenced entity given constraints.

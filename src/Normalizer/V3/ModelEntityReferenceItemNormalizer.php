@@ -3,10 +3,10 @@
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
+use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\islandora\IslandoraUtils;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemSpecificNormalizerTrait;
-use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\taxonomy\TermInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
 
