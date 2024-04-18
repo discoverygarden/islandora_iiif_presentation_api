@@ -17,9 +17,6 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
     if (!$context['base-depth']) {
       return [];
     }
-    if ($context['cacheability'] && $context['cacheability'] instanceof CacheableMetadata) {
-      $context['cacheability']->addCacheTags(['node_list']);
-    }
 
     $normalized = [];
     // XXX: Given that children are being resolved this is non-standard.
@@ -30,6 +27,8 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
       ->accessCheck()
       ->sort('field_weight')
       ->execute();
+
+    $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['node_list']));
 
     // Load all the entities.
     $children = $this->entityTypeManager->getStorage('node')->loadMultiple($ids);
