@@ -3,6 +3,7 @@
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
 use Drupal\islandora\IslandoraUtils;
+use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * Handles the oddity that is field_member_of for Islandora nodes.
@@ -16,7 +17,7 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
     if (!$context['base-depth']) {
       return [];
     }
-    if ($context['cacheability']) {
+    if ($context['cacheability'] && $context['cacheability'] instanceof CacheableMetadata) {
       $context['cacheability']->addCacheTags(['node_list']);
     }
 
