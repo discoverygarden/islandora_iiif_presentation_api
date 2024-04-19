@@ -2,6 +2,7 @@
 
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
@@ -55,6 +56,7 @@ class ModelEntityReferenceItemNormalizer extends NormalizerBase implements Mappe
     // XXX: In its current form this is only going to be applicable to things
     // that have image media as their service files.
     if ($media = $this->getDerivativeMedia($object)) {
+      $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['media_list']));
       $normalized = $this->serializer->normalize($media, $format, $context);
       return $context['base-depth'] ? ['items' => [$normalized]] : $normalized;
     }
