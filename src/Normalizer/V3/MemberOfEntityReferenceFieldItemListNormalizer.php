@@ -2,6 +2,7 @@
 
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\islandora\IslandoraUtils;
 
 /**
@@ -26,6 +27,8 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
       ->accessCheck()
       ->sort('field_weight')
       ->execute();
+
+    $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['node_list']));
 
     // Load all the entities.
     $children = $this->entityTypeManager->getStorage('node')->loadMultiple($ids);

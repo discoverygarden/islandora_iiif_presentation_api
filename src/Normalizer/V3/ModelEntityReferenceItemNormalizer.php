@@ -2,11 +2,12 @@
 
 namespace Drupal\islandora_iiif_presentation_api\Normalizer\V3;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
+use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\iiif_presentation_api\Normalizer\V3\NormalizerBase;
 use Drupal\islandora\IslandoraUtils;
 use Drupal\islandora_iiif_presentation_api\Normalizer\FieldItemSpecificNormalizerTrait;
-use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\taxonomy\TermInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
 
@@ -52,6 +53,7 @@ class ModelEntityReferenceItemNormalizer extends NormalizerBase implements Mappe
    * {@inheritDoc}
    */
   public function normalize($object, $format = NULL, array $context = []) {
+    $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['media_list']));
     // XXX: In its current form this is only going to be applicable to things
     // that have image media as their service files.
     if ($media = $this->getDerivativeMedia($object)) {
