@@ -49,11 +49,17 @@ class ImageItemNormalizer extends NormalizerBase implements MappedFieldInterface
     $normalized = [];
     $values = $object->getValue();
 
-    if (isset($values['height'])) {
-      $normalized['height'] = (int) $values['height'];
-    }
-    if (isset($values['width'])) {
-      $normalized['width'] = (int) $values['width'];
+    // Let's assume a dimension of 0 is not valid.
+    $has_dimensions = ($values['height'] ?? FALSE) && ($values['width'] ?? FALSE);
+    $dimensions = $has_dimensions ?
+      [
+        'height' => (int) $values['height'],
+        'width' => (int) $values['width'],
+      ] :
+      [];
+
+    if ($has_dimensions) {
+      $normalized += $dimensions;
     }
 
     /** @var \Drupal\file\FileInterface $file */
@@ -86,8 +92,9 @@ class ImageItemNormalizer extends NormalizerBase implements MappedFieldInterface
             'type' => 'Annotation',
             'motivation' => 'painting',
             'body' => $this->generateBody($file, context: $context),
-            'height' => (int) $normalized['height'],
-            'width' => (int) $normalized['width'],
+          ] +
+          $dimensions +
+          [
             'target' => $page_id,
           ],
         ],
