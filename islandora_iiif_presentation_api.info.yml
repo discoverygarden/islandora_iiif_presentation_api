@@ -7,5 +7,6 @@ dependencies:
   - drupal:image
   - drupal:media
   - drupal:taxonomy
+  - file_mdm:file_mdm
   - iiif_presentation_api:iiif_presentation_api
   - islandora:islandora
