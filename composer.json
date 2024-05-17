@@ -4,7 +4,7 @@
     "type": "drupal-module",
     "require": {
         "discoverygarden/iiif_presentation_api": "^2.1",
-        "drupal/file_mdm": "^2",
+        "drupal/file_mdm": "^2 || ^3",
         "islandora/islandora": "^2"
     },
     "license": "GPL-3.0-only"
