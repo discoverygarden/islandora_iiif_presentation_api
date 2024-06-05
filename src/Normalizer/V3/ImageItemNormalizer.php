@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
+use Drupal\file_mdm\FileMetadataManagerInterface;
 use Drupal\iiif_presentation_api\Event\V3\ImageBodyEvent;
 use Drupal\iiif_presentation_api\MappedFieldInterface;
 use Drupal\iiif_presentation_api\Normalizer\EntityUriTrait;
@@ -34,6 +35,7 @@ class ImageItemNormalizer extends NormalizerBase implements MappedFieldInterface
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
     protected EventDispatcherInterface $eventDispatcher,
+    protected FileMetadataManagerInterface $fileMetadataManager,
   ) {
     $this->targetFieldName = 'field_media_image';
     $this->targetEntityTypeId = 'media';
@@ -49,17 +51,28 @@ class ImageItemNormalizer extends NormalizerBase implements MappedFieldInterface
     $normalized = [];
     $values = $object->getValue();
 
-    if (isset($values['height'])) {
-      $normalized['height'] = (int) $values['height'];
-    }
-    if (isset($values['width'])) {
-      $normalized['width'] = (int) $values['width'];
-    }
-
     /** @var \Drupal\file\FileInterface $file */
     $file = $this->entityTypeManager->getStorage('file')->load($values['target_id']);
     if ($file) {
       $this->addCacheableDependency($context, $file);
+
+      // Let's assume a dimension of 0 is not valid.
+      $has_dimensions = ($values['height'] ?? FALSE) && ($values['width'] ?? FALSE);
+      if ($has_dimensions) {
+        $dimensions = [
+          'height' => (int) $values['height'],
+          'width' => (int) $values['width'],
+        ];
+      }
+      else {
+        $info = $this->fileMetadataManager->uri($file->getFileUri());
+        $dimensions = [
+          'height' => (int) $info->getMetadata('getimagesize', 1),
+          'width' => (int) $info->getMetadata('getimagesize', 0),
+        ];
+      }
+
+      $normalized += $dimensions;
 
       try {
         $item_url = $file->toUrl('canonical');
@@ -86,8 +99,9 @@ class ImageItemNormalizer extends NormalizerBase implements MappedFieldInterface
             'type' => 'Annotation',
             'motivation' => 'painting',
             'body' => $this->generateBody($file, context: $context),
-            'height' => (int) $normalized['height'],
-            'width' => (int) $normalized['width'],
+          ] +
+          $dimensions +
+          [
             'target' => $page_id,
           ],
         ],
