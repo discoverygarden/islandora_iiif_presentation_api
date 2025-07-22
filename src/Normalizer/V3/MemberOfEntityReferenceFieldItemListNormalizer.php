@@ -19,10 +19,11 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
     }
 
     $normalized = [];
+    $node_storage = $this->entityTypeManager->getStorage('node');
     // XXX: Given that children are being resolved this is non-standard.
     // Leverage an entity query to find all children that are referencing the
     // entity in "field_member_of".
-    $query = $this->entityTypeManager->getStorage('node')->getQuery();
+    $query = $node_storage->getQuery();
     $ids = $query->condition(IslandoraUtils::MEMBER_OF_FIELD, $object->getEntity()->id())
       ->accessCheck()
       ->sort('field_weight')
@@ -30,15 +31,18 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends FieldSpecificEntity
 
     $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['node_list']));
 
-    // Load all the entities.
-    $children = $this->entityTypeManager->getStorage('node')->loadMultiple($ids);
-    if (!empty($children)) {
+    if (!empty($ids)) {
       $normalized['items'] = [];
       $child_context = $context + ['base-depth' => FALSE];
-      foreach ($children as $child) {
-        $normalized['items'][] = $this->serializer->normalize($child, $format, $child_context);
+
+      foreach (array_chunk($ids, 64) as $chunk) {
+        $children = $node_storage->loadMultiple($chunk);
+        foreach ($children as $child) {
+          $normalized['items'][] = $this->serializer->normalize($child, $format, $child_context);
+        }
       }
     }
+
     return $normalized;
   }
 
