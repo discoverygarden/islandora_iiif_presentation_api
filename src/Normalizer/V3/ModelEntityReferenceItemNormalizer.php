@@ -56,7 +56,7 @@ class ModelEntityReferenceItemNormalizer extends NormalizerBase implements Mappe
     $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['media_list']));
     // XXX: In its current form this is only going to be applicable to things
     // that have image media as their service files.
-    if ($media = ($context['referenced_media'] ?? $this->getDerivativeMedia($object))) {
+    if ($media = $this->getDerivativeMedia($object)) {
       $normalized = $this->serializer->normalize($media, $format, $context);
       return $context['base-depth'] ? ['items' => [$normalized]] : $normalized;
     }

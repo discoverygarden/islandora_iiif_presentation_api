@@ -16,7 +16,7 @@ services:
     tags:
       - { name: normalizer, priority: 25 }
       - { name: iiif_presentation_api_map.v3 }
-    arguments: [ '@entity_type.manager', 'node', 'field_member_of', '@database']
+    arguments: [ '@entity_type.manager', 'node', 'field_member_of' ]
   serializer.normalizer.islandora_iiif_presentation_api.iiif_p_v3.node.field_model_entity_reference_item:
     class: 'Drupal\islandora_iiif_presentation_api\Normalizer\V3\ModelEntityReferenceItemNormalizer'
     tags:
