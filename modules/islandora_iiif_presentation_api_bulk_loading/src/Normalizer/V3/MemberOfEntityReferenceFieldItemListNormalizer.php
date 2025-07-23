@@ -102,11 +102,13 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends UpstreamNormalizer 
     $query->groupBy($nid_alias);
     $query->groupBy($weight_alias);
     $query->orderBy($weight_alias);
+    $query->addTag('node_access')->addTag('media_access');
 
     $node_storage = $this->entityTypeManager->getStorage('node');
     $media_storage = $this->entityTypeManager->getStorage('media');
 
     $results = $query->execute()->fetchAll();
+
     foreach (array_chunk($results, $this->loadSize) as $chunk) {
       $nodes = $node_storage->loadMultiple(array_column($chunk, $nid_alias));
       $media = $media_storage->loadMultiple(array_column($chunk, $mid_alias));
