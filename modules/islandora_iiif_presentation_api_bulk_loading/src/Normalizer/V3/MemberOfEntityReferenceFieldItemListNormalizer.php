@@ -61,7 +61,10 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends UpstreamNormalizer 
       'items' => [],
     ];
 
-    $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['node_list']));
+    $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags([
+      'node_list',
+      'media_list',
+    ]));
     $child_context = $context + ['base-depth' => FALSE];
     foreach ($this->getChildren($object->getEntity()) as $item) {
       [$child, $media] = $item;
