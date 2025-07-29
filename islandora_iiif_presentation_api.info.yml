@@ -1,3 +1,4 @@
+---
 name: Islandora IIIF Presentation API
 type: module
 description: 'Provides a IIIF Presentation API implementation for Islandora entities within Drupal.'

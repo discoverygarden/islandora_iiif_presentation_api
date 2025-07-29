@@ -1,0 +1,8 @@
+---
+name: Islandora IIIF Presentation API, Bulk Loading Optimization
+type: module
+description: 'Bulk loading implementation for node and media entities.'
+package: DGI
+core_version_requirement: ^10
+dependencies:
+  - islandora_iiif_presentation_api:islandora_iiif_presentation_api
