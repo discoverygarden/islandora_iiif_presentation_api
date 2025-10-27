@@ -56,7 +56,7 @@ class FieldSpecificEntityReferenceFieldItemListNormalizer extends NormalizerBase
   /**
    * {@inheritDoc}
    */
-  public function normalize($object, $format = NULL, array $context = []) {
+  public function normalize($object, $format = NULL, array $context = []) : float|int|bool|\ArrayObject|array|string|null {
     $normalized = [];
     foreach ($object as $item) {
       $normalized_property = $this->serializer->normalize($item, $format, $context);

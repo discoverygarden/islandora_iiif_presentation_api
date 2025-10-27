@@ -52,7 +52,7 @@ class ModelEntityReferenceItemNormalizer extends NormalizerBase implements Mappe
   /**
    * {@inheritDoc}
    */
-  public function normalize($object, $format = NULL, array $context = []) {
+  public function normalize($object, $format = NULL, array $context = []) : float|int|bool|\ArrayObject|array|string|null {
     $this->addCacheableDependency($context, (new CacheableMetadata())->addCacheTags(['media_list']));
     // XXX: In its current form this is only going to be applicable to things
     // that have image media as their service files.

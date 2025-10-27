@@ -21,7 +21,7 @@ class ImageMediaEntityNormalizer extends ContentEntityNormalizer {
   /**
    * {@inheritDoc}
    */
-  public function normalize($object, $format = NULL, array $context = []) {
+  public function normalize($object, $format = NULL, array $context = []) : float|array|\ArrayObject|bool|int|string|null {
     if (!isset($context['parent'])) {
       throw new \LogicException('Media must be normalized with a parent context.');
     }
