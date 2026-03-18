@@ -44,7 +44,7 @@ class ImageItemNormalizer extends NormalizerBase implements MappedFieldInterface
   /**
    * {@inheritDoc}
    */
-  public function normalize($object, $format = NULL, array $context = []) {
+  public function normalize($object, $format = NULL, array $context = []) : float|int|bool|\ArrayObject|array|string|null {
     if (!isset($context['parent'])) {
       throw new LogicException('Normalization requires a parent context.');
     }
