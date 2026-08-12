@@ -95,6 +95,7 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends UpstreamNormalizer 
     assert($query instanceof SelectInterface);
     $nfmo = $query->join('node__field_member_of', 'nfmo', '%alias.entity_id = n.nid');
     $mfmo = $query->leftJoin('media__field_media_of', 'mfmo', '%alias.field_media_of_target_id = n.nid');
+    $query->join('media', 'm', "%alias.mid = $mfmo.entity_id");
     $mfsu = $query->leftJoin('media__field_media_use', 'mfmu', "%alias.entity_id = $mfmo.entity_id");
     $ttfeu = $query->join('taxonomy_term__field_external_uri', 'ttfeu', "%alias.entity_id = $mfsu.field_media_use_target_id");
     $query->condition("$nfmo.field_member_of_target_id", $node->id())
