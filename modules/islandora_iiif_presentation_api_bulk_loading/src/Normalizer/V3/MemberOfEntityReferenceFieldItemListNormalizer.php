@@ -91,15 +91,16 @@ class MemberOfEntityReferenceFieldItemListNormalizer extends UpstreamNormalizer 
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function getChildren(NodeInterface $node) : \Generator {
-    $query = $this->database->select('node__field_member_of', 'nfmo')
-      ->condition('nfmo.field_member_of_target_id', $node->id());
+    $query = $this->database->select('node', 'n');
     assert($query instanceof SelectInterface);
-    $mfmo = $query->leftJoin('media__field_media_of', 'mfmo', '%alias.field_media_of_target_id = nfmo.entity_id');
+    $nfmo = $query->join('node__field_member_of', 'nfmo', '%alias.entity_id = n.nid');
+    $mfmo = $query->leftJoin('media__field_media_of', 'mfmo', '%alias.field_media_of_target_id = n.nid');
     $mfsu = $query->leftJoin('media__field_media_use', 'mfmu', "%alias.entity_id = $mfmo.entity_id");
     $ttfeu = $query->join('taxonomy_term__field_external_uri', 'ttfeu', "%alias.entity_id = $mfsu.field_media_use_target_id");
-    $query->condition("$ttfeu.field_external_uri_uri", 'http://pcdm.org/use#ServiceFile');
-    $nfw = $query->leftJoin('node__field_weight', 'nfw', '%alias.entity_id = nfmo.entity_id');
-    $nid_alias = $query->addField('nfmo', 'entity_id', 'nid');
+    $query->condition("$nfmo.field_member_of_target_id", $node->id())
+      ->condition("$ttfeu.field_external_uri_uri", 'http://pcdm.org/use#ServiceFile');
+    $nfw = $query->leftJoin('node__field_weight', 'nfw', '%alias.entity_id = n.nid');
+    $nid_alias = $query->addField('n', 'nid');
     $mid_alias = $query->addExpression("MIN($mfmo.entity_id)", 'mid');
     $weight_alias = $query->addExpression("COALESCE($nfw.field_weight_value, 0)", 'w');
     $query->groupBy($nid_alias);
